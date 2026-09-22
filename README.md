@@ -10,40 +10,41 @@
 
 ## 1. Project Overview
 
-This project was completed as part of an Oracle Database and PL/SQL assignment. The main purpose of the assignment was to practice working with Oracle Pluggable Databases (PDBs) and basic database administration.
+This project was completed as part of an Oracle Database and PL/SQL assignment. The purpose of the assignment was to practice creating, managing, verifying, and deleting Oracle Pluggable Databases (PDBs).
 
-The work included creating a new PDB, configuring and verifying a database user, testing PDB operations, creating a temporary PDB, and completely removing the temporary PDB.
+The assignment involved creating a main PDB using the required naming format, configuring the required database user, verifying the PDB and user, and creating and deleting a temporary PDB.
 
 ### Main PDB
 
-`MU_PDB_27426`
+`HI_PDB_29364`
 
 ### Coursework User
 
-`MU_PLSQLAUCA_27426`
+`HIRWA_PLSQLAUCA_29364`
 
 ### Temporary PDB
 
-`MU_TO_DELETE_PDB_27426`
+`HI_TO_DELETE_PDB_29364`
 
 ---
 
 ## 2. Scope Summary
 
-The scope of this assignment covers the creation, configuration, verification, and deletion of Oracle Pluggable Databases.
+The scope of this assignment covers basic Oracle PDB administration and database management.
 
-The main tasks included:
+The main activities included:
 
-* Creating the required PDB.
-* Configuring the required administrative user.
+* Creating the required Pluggable Database.
+* Configuring the required database user.
 * Opening and verifying the PDB.
-* Checking the PDB status using Oracle SQL commands.
+* Checking PDB status using SQL commands.
 * Saving the PDB state.
-* Creating a temporary PDB for testing.
-* Closing and deleting the temporary PDB.
-* Verifying that the temporary PDB was completely removed.
-* Documenting the work with screenshots.
-* Recording challenges encountered during the implementation and how they were resolved.
+* Creating a temporary PDB.
+* Closing the temporary PDB.
+* Permanently deleting the temporary PDB.
+* Verifying that the temporary PDB was removed.
+* Documenting the work using screenshots.
+* Recording challenges encountered and their solutions.
 
 ---
 
@@ -51,61 +52,59 @@ The main tasks included:
 
 The assignment was completed using the following environment:
 
-| Item                    | Details                   |
-| ----------------------- | ------------------------- |
-| Database                | Oracle Database Free 26AI |
-| Tool                    | Oracle SQL Developer      |
-| Operating System        | Windows                   |
-| Host                    | localhost                 |
-| Port                    | 1521                      |
-| Service Name            | FREEPDB1                  |
-| Main PDB                | MU_PDB_27426              |
-| Administrative Account  | SYS                       |
-| User Created/Configured | MU_PLSQLAUCA_27426        |
+| Item                   | Details                   |
+| ---------------------- | ------------------------- |
+| Database               | Oracle Database Free 26AI |
+| Database Tool          | Oracle SQL Developer      |
+| Operating System       | Windows                   |
+| Host                   | localhost                 |
+| Port                   | 1521                      |
+| Service Name           | FREEPDB1                  |
+| Main PDB               | HI_PDB_29364              |
+| Administrative Account | SYS                       |
+| Coursework User        | HIRWA_PLSQLAUCA_29364     |
 
-Administrative commands were executed using the `SYS` account with the required administrative privileges.
+Administrative operations were performed using the `SYS` account with the required privileges.
 
 ---
 
-# 4. Task 1 — Create the Main PDB
+# 4. Task 1 — Create a New PDB
 
 ## Objective
 
-The first task was to create a new Pluggable Database using the required naming convention.
+The first task was to create a new Oracle Pluggable Database using the required naming convention.
 
-The final PDB name was:
+The PDB created for the assignment was:
 
 ```text
-MU_PDB_27426
+HI_PDB_29364
 ```
 
-The required database user was:
+The required coursework user was:
 
 ```text
-MU_PLSQLAUCA_27426
+HIRWA_PLSQLAUCA_29364
 ```
 
 ## PDB Creation
 
-The Oracle environment did not have Oracle Managed Files enabled, so the `FILE_NAME_CONVERT` clause was required when creating the PDB.
+The Oracle environment required the use of `FILE_NAME_CONVERT` because Oracle Managed Files were not enabled for the PDB creation process.
 
-The PDB seed directory was:
+The PDB seed directory was identified as:
 
 ```text
 C:\APP\KALIS\PRODUCT\26AI\ORADATA\FREE\PDBSEED\
 ```
 
-The new PDB was created in its own directory.
-
-Example command:
+The PDB was created using a separate destination directory.
 
 ```sql
-CREATE PLUGGABLE DATABASE MU_PDB_27426
-ADMIN USER MU_PLSQLAUCA_27426
+CREATE PLUGGABLE DATABASE HI_PDB_29364
+ADMIN USER HIRWA_PLSQLAUCA_29364
 IDENTIFIED BY [password]
 FILE_NAME_CONVERT = (
     'C:\APP\KALIS\PRODUCT\26AI\ORADATA\FREE\PDBSEED\',
-    'C:\APP\KALIS\PRODUCT\26AI\ORADATA\FREE\MU_PDB_27426\'
+    'C:\APP\KALIS\PRODUCT\26AI\ORADATA\FREE\HI_PDB_29364\'
 );
 ```
 
@@ -116,32 +115,34 @@ The actual password is not included in this repository.
 After creation, the PDB was opened using:
 
 ```sql
-ALTER PLUGGABLE DATABASE MU_PDB_27426 OPEN;
+ALTER PLUGGABLE DATABASE HI_PDB_29364 OPEN;
 ```
 
-The PDB status was then checked with:
+The PDB status was checked with:
 
 ```sql
 SHOW PDBS;
 ```
 
-The final status showed:
+The expected result was:
 
 ```text
-MU_PDB_27426    READ WRITE
+HI_PDB_29364    READ WRITE
 ```
 
 ## Saving the PDB State
 
-To allow the PDB to retain its open state after database restart, the following command was executed:
+The PDB state was saved using:
 
 ```sql
-ALTER PLUGGABLE DATABASE MU_PDB_27426 SAVE STATE;
+ALTER PLUGGABLE DATABASE HI_PDB_29364 SAVE STATE;
 ```
+
+This allows the PDB to retain its open state after a database restart.
 
 ### Screenshot Evidence
 
-![Main PDB](screenshots/pdb_creation/01_main_pdb.png)
+![PDB Creation](screenshots/pdb_creation/01_main_pdb.png)
 
 ![PDB Status](screenshots/pdb_creation/02_pdb_status.png)
 
@@ -151,35 +152,35 @@ ALTER PLUGGABLE DATABASE MU_PDB_27426 SAVE STATE;
 
 ## Objective
 
-The second task was to create a temporary PDB and then remove it completely.
+The second task was to create a temporary PDB and then completely remove it from the database.
 
 The temporary PDB was named:
 
 ```text
-MU_TO_DELETE_PDB_27426
+HI_TO_DELETE_PDB_29364
 ```
 
 ## Creating the Temporary PDB
 
-The temporary PDB was created using the same PDB seed directory and a separate destination directory.
+The temporary PDB was created from the PDB seed:
 
 ```sql
-CREATE PLUGGABLE DATABASE MU_TO_DELETE_PDB_27426
+CREATE PLUGGABLE DATABASE HI_TO_DELETE_PDB_29364
 ADMIN USER temp_admin
 IDENTIFIED BY [password]
 FILE_NAME_CONVERT = (
     'C:\APP\KALIS\PRODUCT\26AI\ORADATA\FREE\PDBSEED\',
-    'C:\APP\KALIS\PRODUCT\26AI\ORADATA\FREE\MU_TO_DELETE_PDB_27426\'
+    'C:\APP\KALIS\PRODUCT\26AI\ORADATA\FREE\HI_TO_DELETE_PDB_29364\'
 );
 ```
 
 The temporary PDB was then opened:
 
 ```sql
-ALTER PLUGGABLE DATABASE MU_TO_DELETE_PDB_27426 OPEN;
+ALTER PLUGGABLE DATABASE HI_TO_DELETE_PDB_29364 OPEN;
 ```
 
-Its existence was verified with:
+Its existence was verified using:
 
 ```sql
 SHOW PDBS;
@@ -187,21 +188,21 @@ SHOW PDBS;
 
 ## Closing the Temporary PDB
 
-Before deleting the PDB, it had to be closed:
+Before the temporary PDB could be deleted, it was closed:
 
 ```sql
-ALTER PLUGGABLE DATABASE MU_TO_DELETE_PDB_27426 CLOSE IMMEDIATE;
+ALTER PLUGGABLE DATABASE HI_TO_DELETE_PDB_29364 CLOSE IMMEDIATE;
 ```
 
 ## Deleting the Temporary PDB
 
-The temporary PDB was then permanently removed together with its associated datafiles:
+The temporary PDB was permanently deleted together with its datafiles:
 
 ```sql
-DROP PLUGGABLE DATABASE MU_TO_DELETE_PDB_27426 INCLUDING DATAFILES;
+DROP PLUGGABLE DATABASE HI_TO_DELETE_PDB_29364 INCLUDING DATAFILES;
 ```
 
-The remaining PDBs were checked again:
+The remaining PDBs were then checked:
 
 ```sql
 SHOW PDBS;
@@ -213,28 +214,28 @@ The temporary PDB was no longer listed, confirming that the deletion was success
 
 ![Temporary PDB](screenshots/pdb_deletion/01_temp_pdb.png)
 
-![PDB Deletion](screenshots/pdb_deletion/02_deletion_verified.png)
+![Deletion Verification](screenshots/pdb_deletion/02_deletion_verified.png)
 
 ---
 
 # 6. Task 3 — PDB and User Verification
 
-The PDB and coursework user were verified after completing the database operations.
+The main PDB and coursework user were verified after completing the database operations.
 
 ## Checking the PDB
 
-The following command was used:
+The following query was used:
 
 ```sql
 SELECT NAME, OPEN_MODE, RESTRICTED
 FROM V$PDBS
-WHERE NAME = 'MU_PDB_27426';
+WHERE NAME = 'HI_PDB_29364';
 ```
 
-The main PDB was confirmed to be:
+The main PDB was expected to show:
 
 ```text
-MU_PDB_27426
+HI_PDB_29364
 READ WRITE
 ```
 
@@ -245,10 +246,10 @@ The required user was checked using:
 ```sql
 SELECT USERNAME, ACCOUNT_STATUS
 FROM DBA_USERS
-WHERE USERNAME = 'MU_PLSQLAUCA_27426';
+WHERE USERNAME = 'HIRWA_PLSQLAUCA_29364';
 ```
 
-The query confirmed that the coursework user existed and was available in the database.
+This query was used to confirm that the required coursework user existed and to check its account status.
 
 ### Screenshot Evidence
 
@@ -256,9 +257,9 @@ The query confirmed that the coursework user existed and was available in the da
 
 ---
 
-# 7. Important SQL Commands Used
+# 7. SQL Commands Used
 
-The following commands were used throughout the assignment.
+The following commands were used during the assignment.
 
 ### Display PDBs
 
@@ -275,10 +276,10 @@ ALTER SESSION SET CONTAINER = CDB$ROOT;
 ### Change to the Main PDB
 
 ```sql
-ALTER SESSION SET CONTAINER = MU_PDB_27426;
+ALTER SESSION SET CONTAINER = HI_PDB_29364;
 ```
 
-### Check Current Container
+### Check the Current Container
 
 ```sql
 SHOW CON_NAME;
@@ -294,28 +295,28 @@ FROM V$PDBS;
 ### Save PDB State
 
 ```sql
-ALTER PLUGGABLE DATABASE MU_PDB_27426 SAVE STATE;
+ALTER PLUGGABLE DATABASE HI_PDB_29364 SAVE STATE;
 ```
 
-### Check User
+### Check the Coursework User
 
 ```sql
 SELECT USERNAME, ACCOUNT_STATUS
 FROM DBA_USERS
-WHERE USERNAME = 'MU_PLSQLAUCA_27426';
+WHERE USERNAME = 'HIRWA_PLSQLAUCA_29364';
 ```
 
 ---
 
 # 8. Business Scenario
 
-A university or organization can use Oracle Pluggable Databases to separate different applications, departments, projects, or development environments while keeping them within the same Oracle Container Database.
+A university or organization can use Oracle Pluggable Databases to separate different applications, departments, projects, or testing environments while keeping them within a single Oracle Container Database.
 
-For this assignment, `MU_PDB_27426` represents a dedicated database environment for coursework.
+For this assignment, `HI_PDB_29364` represents a dedicated database environment for student coursework.
 
-The temporary PDB demonstrates how an isolated database environment can be created for testing and then removed when it is no longer required.
+The temporary PDB demonstrates how an isolated database environment can be created for testing and then removed when it is no longer needed.
 
-This approach can help with database organization, testing, administration, and separation of different workloads.
+This approach provides a practical way to organize database environments and manage separate workloads within an Oracle database system.
 
 ---
 
@@ -323,7 +324,7 @@ This approach can help with database organization, testing, administration, and 
 
 ## Challenge 1 — ORA-65016
 
-During the initial PDB creation, the following error was encountered:
+During PDB creation, the following error may occur when Oracle Managed Files are not enabled:
 
 ```text
 ORA-65016: FILE_NAME_CONVERT must be specified
@@ -331,13 +332,13 @@ ORA-65016: FILE_NAME_CONVERT must be specified
 
 ### Solution
 
-The Oracle environment was not using Oracle Managed Files for the PDB creation process. The PDB seed directory was identified and a destination directory was provided using `FILE_NAME_CONVERT`.
+The PDB seed directory was identified and a destination directory was specified using the `FILE_NAME_CONVERT` clause.
 
 ---
 
-## Challenge 2 — ORA-01537
+## Challenge 2 — Existing Database Files
 
-Another attempt to create a PDB resulted in:
+An attempt to create a PDB using files that already existed could result in:
 
 ```text
 ORA-01537: cannot add file - file already part of database
@@ -345,50 +346,30 @@ ORA-01537: cannot add file - file already part of database
 
 ### Solution
 
-The existing PDB and its associated files were checked instead of attempting to create the same database again. The existing PDB was then used and renamed to the required assignment name.
+The existing PDB and its files were checked before attempting another creation. This prevented duplicate database files from being created.
 
 ---
 
-## Challenge 3 — PDB Naming
+## Challenge 3 — PDB Must Be Closed Before Deletion
 
-The PDB initially had a different name and needed to match the assignment naming requirement.
-
-### Solution
-
-The PDB was renamed to:
+When deleting a PDB that was still open, Oracle could return:
 
 ```text
-MU_PDB_27426
-```
-
-The final name was verified using:
-
-```sql
-SHOW PDBS;
-```
-
----
-
-## Challenge 4 — ORA-65025
-
-When the temporary PDB was initially being deleted, Oracle returned:
-
-```text
-ORA-65025: Pluggable database MU_TO_DELETE_PDB_27426 is not closed on all instances.
+ORA-65025: Pluggable database is not closed on all instances.
 ```
 
 ### Solution
 
-The PDB was first closed using:
+The temporary PDB was first closed:
 
 ```sql
-ALTER PLUGGABLE DATABASE MU_TO_DELETE_PDB_27426 CLOSE IMMEDIATE;
+ALTER PLUGGABLE DATABASE HI_TO_DELETE_PDB_29364 CLOSE IMMEDIATE;
 ```
 
-It was then successfully deleted using:
+It was then deleted:
 
 ```sql
-DROP PLUGGABLE DATABASE MU_TO_DELETE_PDB_27426 INCLUDING DATAFILES;
+DROP PLUGGABLE DATABASE HI_TO_DELETE_PDB_29364 INCLUDING DATAFILES;
 ```
 
 ---
@@ -397,19 +378,20 @@ DROP PLUGGABLE DATABASE MU_TO_DELETE_PDB_27426 INCLUDING DATAFILES;
 
 At the end of the assignment:
 
-* The required PDB `MU_PDB_27426` was successfully configured.
+* The required PDB `HI_PDB_29364` was created and configured.
 * The PDB was opened in `READ WRITE` mode.
-* The required coursework user `MU_PLSQLAUCA_27426` was verified.
+* The coursework user `HIRWA_PLSQLAUCA_29364` was verified.
 * The PDB state was saved.
-* The temporary PDB `MU_TO_DELETE_PDB_27426` was successfully deleted.
-* The deletion was verified using Oracle database queries.
-* Screenshots were collected as evidence of the completed tasks.
+* The temporary PDB `HI_TO_DELETE_PDB_29364` was created for testing.
+* The temporary PDB was closed and permanently deleted.
+* The deletion was verified using Oracle SQL commands.
+* Screenshots were collected as evidence of the completed work.
 
 ---
 
 # 11. Screenshots
 
-The screenshots for this assignment are organized into the following folders:
+The screenshots are organized into the following folders:
 
 ```text
 screenshots/
@@ -432,23 +414,49 @@ The screenshots provide visual evidence of the PDB creation, verification, and d
 
 # 12. Repository Structure
 
-The repository is organized as follows:
-
 ```text
-oracle_pdb_ass_II_27426_[firstname]/
+oracle_pdb_ass_II_29364_hirwa/
 │
 ├── README.md
 │
 └── screenshots/
-<img width="3840" height="2035" alt="pdb_creation" src="https://github.com/user-attachments/assets/94f5e221-69ad-46fa-8541-487aa23c339c" />
-<img width="3840" height="2073" alt="2" src="https://github.com/user-attachments/assets/a46c957c-bca2-4f21-8634-d1d297de485d" />
-<img width="3840" height="2055" alt="3" src="https://github.com/user-attachments/assets/9cbee6d8-7174-4ca9-a5c1-d86f32684f11" />
-<img width="3814" height="2018" alt="4" src="https://github.com/user-attachments/assets/e9a58eae-3456-4ed4-8ee0-29ef2e9e88b7" />
-<img width="3840" height="2062" alt="5" src="https://github.com/user-attachments/assets/2d3e00bb-6b52-4cd7-8d44-3b351719b34a" />
-
-
+    │
+    ├── pdb_creation/
+    │   ├── 01_main_pdb.png
+    │   ├── 02_pdb_status.png
+    │   └── 03_user.png
+    │
+    ├── pdb_deletion/
+    │   ├── 01_temp_pdb.png
+    │   └── 02_deletion_verified.png
+    │
+    └── oem_dashboard/
 ```
 
 ---
 
+# 13. Integrity Statement
 
+I confirm that the work presented in this repository was completed in my own Oracle Database environment. The SQL commands were executed and tested as part of the assignment, and the screenshots represent the results from my database setup.
+
+Passwords and other sensitive credentials have not been included in this repository.
+
+---
+
+# 14. Submission Details
+
+**Repository Name:** `oracle_pdb_ass_II_29364_hirwa`
+
+**Repository Link:** [Paste GitHub repository link here]
+
+**Student Name:** Hirwa Kambali Hyacinthe
+
+**Student ID:** 29364
+
+**PDB Name Created:** `HI_PDB_29364`
+
+**Temporary PDB:** `HI_TO_DELETE_PDB_29364`
+
+**Issues Encountered:** Yes
+
+**Issues Resolved:** Yes
